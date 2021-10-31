@@ -4,6 +4,8 @@
  */
 package Reto4y5_Doctor.Reto4y5_Doctor;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +33,23 @@ public class RepositorioReservaciones {
     public void delete(ModeloReservaciones reservation){
         crud4.delete(reservation);
     }
+    
+    public List<ModeloReservaciones> ReservacionStatusRepositorio(String status){
+        return crud4.findAllByStatus(status);
+    }
+    
+    public List<ModeloReservaciones> ReservacionTiempoRepositorio (Date a, Date b){
+        return crud4.findAllByStartDateAfterAndStartDateBefore(a, b);
+     }
+      
+    
+    public List<ContadorClientes> getClientesRepositorio(){
+         List<ContadorClientes> res = new ArrayList<>();
+         List<Object[]> report = crud4.countTotalReservationsByCliente();
+         for(int i=0; i<report.size(); i++){
+             res.add(new ContadorClientes((Long)report.get(i)[1],(ModeloCliente) report.get(i)[0]));
+         }
+         return res;
+     }
     
 }
